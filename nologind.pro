@@ -22,6 +22,6 @@ target_dbus_service.path = $${DBUS_SERVICE}/dbus-1/system-services
 target_dbus_conf.commands = $$quote(cat $${PWD}/nologind.conf.in | sed "\"s/_GROUP_/$${GROUP}/g;s/_USER_/$${USER}/g"\" > ${INSTALL_ROOT}$${DBUS_CONF}/dbus-1/system.d/org.freedesktop.login1.conf$$escape_expand(\\n\\t))
 target_dbus_service.commands = $$quote(echo "\"[D-BUS Service]"\" > ${INSTALL_ROOT}$${DBUS_SERVICE}/dbus-1/system-services/org.freedesktop.login1.service$$escape_expand(\\n\\t))
 target_dbus_service.commands += $$quote(echo "\"Name=org.freedesktop.login1"\" >> ${INSTALL_ROOT}$${DBUS_SERVICE}/dbus-1/system-services/org.freedesktop.login1.service$$escape_expand(\\n\\t))
-target_dbus_service.commands += $$quote(echo "\"Exec=$${PREFIX}/bin/$${TARGET}"\" >> ${INSTALL_ROOT}$${DBUS_SERVICE}/dbus-1/system-services/org.freedesktop.login1.service$$escape_expand(\\n\\t))
+target_dbus_service.commands += $$quote(echo "\"Exec=$${PREFIX}/sbin/$${TARGET}"\" >> ${INSTALL_ROOT}$${DBUS_SERVICE}/dbus-1/system-services/org.freedesktop.login1.service$$escape_expand(\\n\\t))
 target_dbus_service.commands += $$quote(echo "\"User=$${USER}"\" >> ${INSTALL_ROOT}$${DBUS_SERVICE}/dbus-1/system-services/org.freedesktop.login1.service$$escape_expand(\\n\\t))
 INSTALLS += target target_dbus_conf target_dbus_service
