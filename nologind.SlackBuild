@@ -70,6 +70,8 @@ cd build
 # Configure application
 $QMAKE \
 CONFIG+=release \
+USER=messagebus \
+GROUP=users \
 PREFIX=/usr \
 DOCDIR=/usr/doc \
 MANDIR=/usr/man \
