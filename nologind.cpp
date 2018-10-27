@@ -3,6 +3,10 @@
 
 #include "manager.h"
 
+#define LOGIN1_SERVICE "org.freedesktop.login1"
+#define LOGIN1_PATH "/login1"
+#define LOGIN1_FULL_PATH "/org/freedesktop/login1"
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
