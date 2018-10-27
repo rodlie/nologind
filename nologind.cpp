@@ -1,13 +1,13 @@
 #include <QCoreApplication>
 #include <QtDBus>
 
-#include "login1.h"
+#include "manager.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     QCoreApplication::setOrganizationDomain("org");
-    QCoreApplication::setApplicationName("freedesktop");
+    QCoreApplication::setApplicationName("freedesktop.login1");
 
     if (!QDBusConnection::systemBus().isConnected()) {
         qWarning("Cannot connect to the D-Bus system bus.");
@@ -19,15 +19,15 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    login1 service;
+    Manager man;
     if (!QDBusConnection::systemBus().registerObject(LOGIN1_PATH,
-                                                     &service,
+                                                     &man,
                                                      QDBusConnection::ExportAllContents)) {
         qWarning() << QDBusConnection::systemBus().lastError().message();
         return 1;
     }
     if (!QDBusConnection::systemBus().registerObject(LOGIN1_FULL_PATH,
-                                                     &service,
+                                                     &man,
                                                      QDBusConnection::ExportAllContents)) {
         qWarning() << QDBusConnection::systemBus().lastError().message();
         return 1;

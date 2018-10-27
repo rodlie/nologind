@@ -5,8 +5,8 @@ QT -= gui
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
-SOURCES += $${TARGET}.cpp login1.cpp
-HEADERS += login1.h
+SOURCES += $${TARGET}.cpp manager.cpp
+HEADERS += manager.h
 OTHER_FILES += nologind.conf.in
 
 isEmpty(PREFIX): PREFIX = /usr/local
