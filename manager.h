@@ -9,11 +9,18 @@
 #define CONSOLEKIT_MANAGER_PATH "/org/freedesktop/ConsoleKit/Manager"
 #define CONSOLEKIT_MANAGER "org.freedesktop.ConsoleKit.Manager"
 
+#define UPOWER_SERVICE "org.freedesktop.UPower"
+#define UPOWER_PATH "/org/freedesktop/UPower"
+#define UPOWER_MANAGER "org.freedesktop.UPower"
+
 class Manager : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool Docked READ Docked)
+
 public:
     explicit Manager(QObject *parent = NULL);
+    bool Docked();
 /*
       readwrite b EnableWallMessages = false;
       readwrite s WallMessage = '';
@@ -39,11 +46,12 @@ public:
       readonly b PreparingForShutdown = false;
       readonly b PreparingForSleep = false;
       readonly (st) ScheduledShutdown = ('', 0);
-      readonly b Docked = false;
+[X]   readonly b Docked = false;
 */
 
 private:
     QDBusInterface *ckit;
+    QDBusInterface *upower;
 
 signals:
     void PrepareForShutdown(bool shutdown);

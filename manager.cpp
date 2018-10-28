@@ -7,17 +7,27 @@
 
 Manager::Manager(QObject *parent) : QObject(parent)
   , ckit(0)
+  , upower(0)
 {
+    QDBusConnection system = QDBusConnection::systemBus();
+    if (!system.isConnected()) {
+        qWarning() << "D-Bus not available!!!";
+        QTimer::singleShot(100, qApp, SLOT(quit()));
+    }
     ckit = new QDBusInterface(CONSOLEKIT_SERVICE,
                               CONSOLEKIT_MANAGER_PATH,
                               CONSOLEKIT_MANAGER,
-                              QDBusConnection::systemBus(),
+                              system,
                               this);
-    if (!ckit->isValid()) {
-        qWarning() << "ConsoleKit is not available!!!";
+    upower = new QDBusInterface(UPOWER_SERVICE,
+                                UPOWER_PATH,
+                                UPOWER_MANAGER,
+                                system,
+                                this);
+    if (!ckit->isValid() || !upower->isValid()) {
+        qWarning() << "ConsoleKit/upower is not available!!!";
         QTimer::singleShot(100, qApp, SLOT(quit()));
     }
-    QDBusConnection system = QDBusConnection::systemBus();
     system.connect(CONSOLEKIT_SERVICE,
                    CONSOLEKIT_MANAGER_PATH,
                    CONSOLEKIT_MANAGER,
@@ -30,6 +40,12 @@ Manager::Manager(QObject *parent) : QObject(parent)
                    "PrepareForShutdown",
                    this,
                    SLOT(handlePrepareForShutdown(bool)));
+}
+
+bool Manager::Docked()
+{
+    if (upower->isValid()) { return upower->property("IsDocked").toBool(); }
+    return false;
 }
 
 bool Manager::canAction(const QString &action)
