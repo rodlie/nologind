@@ -46,6 +46,8 @@ private:
     QDBusInterface *ckit;
 
 signals:
+    void PrepareForShutdown(bool shutdown);
+    void PrepareForSleep(bool suspend);
 /*
       SessionNew(s session_id,
                  o object_path);
@@ -59,13 +61,15 @@ signals:
               o object_path);
       SeatRemoved(s seat_id,
                   o object_path);
-      PrepareForShutdown(b start);
-      PrepareForSleep(b start);
+[X]   PrepareForShutdown(b start);
+[X]   PrepareForSleep(b start);
 */
 
 private slots:
     bool canAction(const QString &action);
     const QString doAction(const QString &action);
+    void handlePrepareForSuspend(bool suspend);
+    void handlePrepareForShutdown(bool shutdown);
 
 public slots:
     void PowerOff(bool trigger);

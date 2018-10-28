@@ -17,6 +17,19 @@ Manager::Manager(QObject *parent) : QObject(parent)
         qWarning() << "ConsoleKit is not available!!!";
         QTimer::singleShot(100, qApp, SLOT(quit()));
     }
+    QDBusConnection system = QDBusConnection::systemBus();
+    system.connect(CONSOLEKIT_SERVICE,
+                   CONSOLEKIT_MANAGER_PATH,
+                   CONSOLEKIT_MANAGER,
+                   "PrepareForSleep",
+                   this,
+                   SLOT(handlePrepareForSuspend(bool)));
+    system.connect(CONSOLEKIT_SERVICE,
+                   CONSOLEKIT_MANAGER_PATH,
+                   CONSOLEKIT_MANAGER,
+                   "PrepareForShutdown",
+                   this,
+                   SLOT(handlePrepareForShutdown(bool)));
 }
 
 bool Manager::canAction(const QString &action)
@@ -37,6 +50,18 @@ const QString Manager::doAction(const QString &action)
     }
     QDBusMessage reply = ckit->call(action, true);
     return reply.errorMessage();
+}
+
+void Manager::handlePrepareForSuspend(bool suspend)
+{
+    qDebug() << "handle PrepareForSleep signal from ConsoleKit";
+    emit PrepareForSleep(suspend);
+}
+
+void Manager::handlePrepareForShutdown(bool shutdown)
+{
+    qDebug() << "handle PrepareForShutdown signal from ConsoleKit";
+    emit  PrepareForShutdown(shutdown);
 }
 
 void Manager::PowerOff(bool trigger)
