@@ -1,21 +1,28 @@
 # nologind
 
-A org.freedesktop.login1 service that acts as a wrapper for ConsoleKit on Slackware.
+A logind wrapper for ConsoleKit(2) on Slackware. Used as a compatibility layer for applications that require (parts of) the org.freedesktop.login1 D-Bus system service.
 
+**WARNING!!!** This is experimental software and may break applications, login managers and desktop environments, **only a pure Slackware 14.2 installation is supported.** If something breaks let me know (and ``killall nologind && removepkg nologind`` to revert to default).
+
+## Get latest
+
+Get the latest source from git:
 ```
 git clone https://github.com/rodlie/nologind
 cd nologind
 ```
+Then install:
 ```
-git pull
 sudo ./nologind.SlackBuild
 sudo upgradepkg --install-new /tmp/nologind-VERSION.tgz
 ```
-
-**WARNING!!!** Any application, login manager and desktop environment in Slackware that checks for logind vs. ConsoleKit will probably **BREAK** (until we get a stable release).
-
-nologind was made to see if it was possible to fake logind to get Skype [working](https://www.linuxquestions.org/questions/slackware-14/so-no-more-working-skype-for-slackware-15-the-older-versions-crash-because-the-new-glibc-the-newer-ones-needs-systemd-logind-4175638990/) on Slackware (it was).
-
+Update installation:
+```
+git pull
+sudo ./nologind.SlackBuild
+sudo upgradepkg /tmp/nologind-VERSION.tgz
+```
+ 
 ## Implemented
 
 org.freedesktop.login1.Manager:
@@ -35,4 +42,4 @@ org.freedesktop.login1.Manager:
  * CanSuspend
  * CanHibernate
  * CanHybridSleep
- * Inhibit (does not do anything yet, see issue #2)
+ * Inhibit (does nothing, see issue #2)
