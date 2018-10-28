@@ -18,6 +18,8 @@ nologind was made to see if it was possible to fake logind to get Skype [working
 
 ## Implemented
 
+org.freedesktop.login1.Manager:
+
  * PrepareForShutdown
  * PrepareForSleep
  * PowerOff
