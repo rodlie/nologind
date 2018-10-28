@@ -17,10 +17,14 @@ class Manager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool Docked READ Docked)
+    Q_PROPERTY(bool PreparingForShutdown READ PreparingForShutdown)
+    Q_PROPERTY(bool PreparingForSleep READ PreparingForSleep)
 
 public:
     explicit Manager(QObject *parent = NULL);
     bool Docked();
+    bool PreparingForShutdown();
+    bool PreparingForSleep();
 /*
       readwrite b EnableWallMessages = false;
       readwrite s WallMessage = '';
@@ -43,8 +47,8 @@ public:
       readonly t HoldoffTimeoutUSec = 30000000;
       readonly s IdleAction = 'ignore';
       readonly t IdleActionUSec = 1800000000;
-      readonly b PreparingForShutdown = false;
-      readonly b PreparingForSleep = false;
+[X]   readonly b PreparingForShutdown = false;
+[X]   readonly b PreparingForSleep = false;
       readonly (st) ScheduledShutdown = ('', 0);
 [X]   readonly b Docked = false;
 */
@@ -52,6 +56,8 @@ public:
 private:
     QDBusInterface *ckit;
     QDBusInterface *upower;
+    bool shutdownStatus;
+    bool sleepStatus;
 
 signals:
     void PrepareForShutdown(bool shutdown);

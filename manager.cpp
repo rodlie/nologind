@@ -8,6 +8,8 @@
 Manager::Manager(QObject *parent) : QObject(parent)
   , ckit(0)
   , upower(0)
+  , shutdownStatus(false)
+  , sleepStatus(false)
 {
     QDBusConnection system = QDBusConnection::systemBus();
     if (!system.isConnected()) {
@@ -48,6 +50,16 @@ bool Manager::Docked()
     return false;
 }
 
+bool Manager::PreparingForShutdown()
+{
+    return shutdownStatus;
+}
+
+bool Manager::PreparingForSleep()
+{
+    return sleepStatus;
+}
+
 bool Manager::canAction(const QString &action)
 {
     if (!ckit->isValid() || action.isEmpty()) { return false; }
@@ -71,12 +83,14 @@ const QString Manager::doAction(const QString &action)
 void Manager::handlePrepareForSuspend(bool suspend)
 {
     qDebug() << "handle PrepareForSleep signal from ConsoleKit";
+    sleepStatus = suspend;
     emit PrepareForSleep(suspend);
 }
 
 void Manager::handlePrepareForShutdown(bool shutdown)
 {
     qDebug() << "handle PrepareForShutdown signal from ConsoleKit";
+    shutdownStatus = shutdown;
     emit  PrepareForShutdown(shutdown);
 }
 

@@ -7,7 +7,7 @@ CONFIG -= app_bundle
 TEMPLATE = app
 SOURCES += $${TARGET}.cpp manager.cpp
 HEADERS += manager.h
-OTHER_FILES += nologind.conf.in
+OTHER_FILES += nologind.conf.in README.md
 
 isEmpty(PREFIX): PREFIX = /usr/local
 isEmpty(DBUS_CONF): DBUS_CONF = /etc
